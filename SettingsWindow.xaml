@@ -1,0 +1,521 @@
+<Window x:Class="SWTORStarter.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="SWTOR Starter - Einstellungen" Height="600" Width="800"
+        WindowStartupLocation="CenterOwner"
+        Background="#1E1E1E"
+        TextElement.Foreground="#E0E0E0"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="CanResize">
+    
+    <Window.Resources>
+        <!-- Custom Color Palette -->
+        <SolidColorBrush x:Key="DarkBackground" Color="#1E1E1E"/>
+        <SolidColorBrush x:Key="CardBackground" Color="#2D2D2D"/>
+        <SolidColorBrush x:Key="AccentColor" Color="#00BCD4"/>
+        <SolidColorBrush x:Key="SuccessColor" Color="#4CAF50"/>
+        <SolidColorBrush x:Key="WarningColor" Color="#FF9800"/>
+        <SolidColorBrush x:Key="ErrorColor" Color="#F44336"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#E0E0E0"/>
+        <SolidColorBrush x:Key="TextSecondary" Color="#B0B0B0"/>
+        <SolidColorBrush x:Key="BorderColor" Color="#404040"/>
+        
+        <!-- Custom Styles -->
+        <Style x:Key="ModernCardStyle" TargetType="materialDesign:Card">
+            <Setter Property="Background" Value="{StaticResource CardBackground}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp4"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="#000000" Direction="270" ShadowDepth="8" Opacity="0.3" BlurRadius="15"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="ModernButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource AccentColor}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="#000000" Direction="270" ShadowDepth="4" Opacity="0.3" BlurRadius="8"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <!-- Custom Window Border -->
+    <Border Background="{StaticResource DarkBackground}" 
+            BorderBrush="{StaticResource BorderColor}" 
+            BorderThickness="1" 
+            CornerRadius="12">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Custom Title Bar -->
+            <Border Grid.Row="0" 
+                    Background="#252525" 
+                    Height="45" 
+                    CornerRadius="12,12,0,0"
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.Column="0" 
+                                Orientation="Horizontal" 
+                                VerticalAlignment="Center"
+                                Margin="15,0,0,0">
+                        <materialDesign:PackIcon Kind="Settings" 
+                                                 Width="20" 
+                                                 Height="20" 
+                                                 Foreground="{StaticResource AccentColor}"
+                                                 Margin="0,0,10,0"/>
+                        <TextBlock Text="Einstellungen" 
+                                   Style="{DynamicResource MaterialDesignSubtitle1TextBlock}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{StaticResource TextPrimary}"
+                                   FontWeight="SemiBold"/>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="2" 
+                                Orientation="Horizontal" 
+                                HorizontalAlignment="Right">
+                        <Button x:Name="MinimizeButton" 
+                                Style="{DynamicResource MaterialDesignIconButton}"
+                                Width="45" Height="45"
+                                Background="Transparent"
+                                Foreground="{StaticResource TextSecondary}"
+                                Click="MinimizeButton_Click">
+                            <materialDesign:PackIcon Kind="Minus" Width="18" Height="18"/>
+                        </Button>
+                        <Button x:Name="CloseButton" 
+                                Style="{DynamicResource MaterialDesignIconButton}"
+                                Width="45" Height="45"
+                                Background="Transparent"
+                                Foreground="{StaticResource TextSecondary}"
+                                Click="CloseButton_Click">
+                            <materialDesign:PackIcon Kind="Close" Width="18" Height="18"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            
+            <!-- Main Content -->
+            <ScrollViewer Grid.Row="1" Margin="20">
+                <StackPanel>
+                    <!-- Allgemeine Einstellungen -->
+                    <materialDesign:Card Style="{StaticResource ModernCardStyle}">
+                        <StackPanel>
+                            <TextBlock Text="🔧 Allgemeine Einstellungen" 
+                                       Style="{DynamicResource MaterialDesignHeadline6TextBlock}"
+                                       Foreground="{StaticResource AccentColor}"
+                                       Margin="0,0,0,20"/>
+                            
+                            <!-- Auto-Start Einstellungen -->
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock Text="Auto-Start Verhalten:" 
+                                           Style="{DynamicResource MaterialDesignBody1TextBlock}"
+                                           Foreground="{StaticResource TextPrimary}"
+                                           Margin="0,0,0,10"/>
+                                
+                                <CheckBox x:Name="AutoStartSteamCheckBox" 
+                                          Content="Steam automatisch starten wenn nicht läuft"
+                                          Foreground="{StaticResource TextPrimary}"
+                                          Margin="20,5,0,5"/>
+                                
+                                <CheckBox x:Name="AutoStartSWTORCheckBox" 
+                                          Content="SWTOR automatisch starten nach Steam-Start"
+                                          Foreground="{StaticResource TextPrimary}"
+                                          Margin="20,5,0,5"/>
+                                
+                                <CheckBox x:Name="AutoFillPasswordCheckBox" 
+                                          Content="Passwort automatisch einfügen"
+                                          Foreground="{StaticResource TextPrimary}"
+                                          Margin="20,5,0,5"/>
+                            </StackPanel>
+                            
+                            <!-- Timer-Einstellungen -->
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock Text="⏰ Auto-Start Timer:" 
+                                           Style="{DynamicResource MaterialDesignBody1TextBlock}"
+                                           Foreground="{StaticResource TextPrimary}"
+                                           Margin="0,0,0,10"/>
+                                
+                                <CheckBox x:Name="AutoStartTimerCheckBox" 
+                                          Content="Auto-Start Timer aktivieren (startet SWTOR automatisch nach Verzögerung)"
+                                          Foreground="{StaticResource TextPrimary}"
+                                          Margin="20,5,0,5"/>
+                                
+                                <Grid Margin="20,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBlock Grid.Column="0" 
+                                               Text="Timer-Verzögerung:" 
+                                               Foreground="{StaticResource TextPrimary}"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,10,0"/>
+                                    <TextBox Grid.Column="1" 
+                                             x:Name="AutoStartTimerDelayTextBox"
+                                             Text="5"
+                                             Background="#252525"
+                                             BorderBrush="{StaticResource BorderColor}"
+                                             Foreground="{StaticResource TextPrimary}"
+                                             Margin="0,5"/>
+                                    <TextBlock Grid.Column="2" 
+                                               Text="Sekunden" 
+                                               Foreground="{StaticResource TextSecondary}"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0"/>
+                                </Grid>
+                                
+                                <TextBlock Text="💡 Der Timer startet automatisch SWTOR nach der angegebenen Verzögerung, wenn die Checkbox aktiviert ist." 
+                                           Style="{DynamicResource MaterialDesignCaptionTextBlock}"
+                                           Foreground="{StaticResource TextSecondary}"
+                                           Margin="20,10,0,0"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                            
+                            <!-- Wartezeiten -->
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock Text="Wartezeiten und Schwellenwerte:" 
+                                           Style="{DynamicResource MaterialDesignBody1TextBlock}"
+                                           Foreground="{StaticResource TextPrimary}"
+                                           Margin="0,0,0,10"/>
+                                
+                                <Grid Margin="20,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <TextBlock Grid.Column="0" Grid.Row="0" 
+                                               Text="Steam-Start Wartezeit:" 
+                                               Foreground="{StaticResource TextPrimary}"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,10,0"/>
+                                    <TextBox Grid.Column="1" Grid.Row="0" 
+                                             x:Name="SteamStartDelayTextBox"
+                                             Text="30"
+                                             Background="#252525"
+                                             BorderBrush="{StaticResource BorderColor}"
+                                             Foreground="{StaticResource TextPrimary}"
+                                             Margin="0,5"/>
+                                    <TextBlock Grid.Column="2" Grid.Row="0" 
+                                               Text="Sekunden" 
+                                               Foreground="{StaticResource TextSecondary}"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0"/>
+                                    
+                                    <TextBlock Grid.Column="0" Grid.Row="1" 
+                                               Text="SWTOR-Launcher Wartezeit:" 
+                                               Foreground="{StaticResource TextPrimary}"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,10,0"/>
+                                    <TextBox Grid.Column="1" Grid.Row="1" 
+                                             x:Name="SWTORLauncherDelayTextBox"
+                                             Text="45"
+                                             Background="#252525"
+                                             BorderBrush="{StaticResource BorderColor}"
+                                             Foreground="{StaticResource TextPrimary}"
+                                             Margin="0,5"/>
+                                    <TextBlock Grid.Column="2" Grid.Row="1" 
+                                               Text="Sekunden" 
+                                               Foreground="{StaticResource TextSecondary}"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0"/>
+                                    
+                                    <TextBlock Grid.Column="0" Grid.Row="2" 
+                                               Text="Passwort-Eingabe Wartezeit:" 
+                                               Foreground="{StaticResource TextPrimary}"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,10,0"/>
+                                    <TextBox Grid.Column="1" Grid.Row="2" 
+                                             x:Name="PasswordInputDelayTextBox"
+                                             Text="5"
+                                             Background="#252525"
+                                             BorderBrush="{StaticResource BorderColor}"
+                                             Foreground="{StaticResource TextPrimary}"
+                                             Margin="0,5"/>
+                                    <TextBlock Grid.Column="2" Grid.Row="2" 
+                                               Text="Sekunden" 
+                                               Foreground="{StaticResource TextSecondary}"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0"/>
+                                    
+                                    <TextBlock Grid.Column="0" Grid.Row="3" 
+                                               Text="Launcher RAM-Schwellenwert:" 
+                                               Foreground="{StaticResource TextPrimary}"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,10,0"/>
+                                    <TextBox Grid.Column="1" Grid.Row="3" 
+                                             x:Name="LauncherRamThresholdTextBox"
+                                             Text="70"
+                                             Background="#252525"
+                                             BorderBrush="{StaticResource BorderColor}"
+                                             Foreground="{StaticResource TextPrimary}"
+                                             Margin="0,5"/>
+                                    <TextBlock Grid.Column="2" Grid.Row="3" 
+                                               Text="MB" 
+                                               Foreground="{StaticResource TextSecondary}"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0"/>
+                                </Grid>
+                                
+                                <TextBlock Text="💡 Der Launcher wird als 'vollständig geladen' betrachtet, wenn er mehr RAM als den angegebenen Schwellenwert verbraucht." 
+                                           Style="{DynamicResource MaterialDesignCaptionTextBlock}"
+                                           Foreground="{StaticResource TextSecondary}"
+                                           Margin="20,10,0,0"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </materialDesign:Card>
+                    
+                    <!-- Steam Einstellungen -->
+                    <materialDesign:Card Style="{StaticResource ModernCardStyle}">
+                        <StackPanel>
+                            <TextBlock Text="🎮 Steam Einstellungen" 
+                                       Style="{DynamicResource MaterialDesignHeadline6TextBlock}"
+                                       Foreground="{StaticResource AccentColor}"
+                                       Margin="0,0,0,20"/>
+                            
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock Text="Steam-Start Modus:" 
+                                           Style="{DynamicResource MaterialDesignBody1TextBlock}"
+                                           Foreground="{StaticResource TextPrimary}"
+                                           Margin="0,0,0,10"/>
+                                
+                                <RadioButton x:Name="SteamNormalRadioButton" 
+                                            Content="Normal starten (Fenster sichtbar)"
+                                            Foreground="{StaticResource TextPrimary}"
+                                            Margin="20,5,0,5"
+                                            IsChecked="True"/>
+                                
+                                <RadioButton x:Name="SteamMinimizedRadioButton" 
+                                            Content="Minimiert starten (kein Fenster)"
+                                            Foreground="{StaticResource TextPrimary}"
+                                            Margin="20,5,0,5"/>
+                                
+                                <RadioButton x:Name="SteamSilentRadioButton" 
+                                            Content="Silent starten (im Hintergrund)"
+                                            Foreground="{StaticResource TextPrimary}"
+                                            Margin="20,5,0,5"/>
+                            </StackPanel>
+                            
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock Text="Steam-Pfad:" 
+                                           Style="{DynamicResource MaterialDesignBody1TextBlock}"
+                                           Foreground="{StaticResource TextPrimary}"
+                                           Margin="0,0,0,10"/>
+                                
+                                <Grid Margin="20,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBox Grid.Column="0" 
+                                             x:Name="SteamPathTextBox"
+                                             Text="Automatisch erkannt"
+                                             Background="#252525"
+                                             BorderBrush="{StaticResource BorderColor}"
+                                             Foreground="{StaticResource TextSecondary}"
+                                             IsReadOnly="True"
+                                             Margin="0,0,10,0"/>
+                                    
+                                    <Button Grid.Column="1" 
+                                            Content="Durchsuchen"
+                                            Style="{StaticResource ModernButtonStyle}"
+                                            Width="100"
+                                            Click="BrowseSteamPath_Click"/>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </materialDesign:Card>
+                    
+                    <!-- SWTOR Einstellungen -->
+                    <materialDesign:Card Style="{StaticResource ModernCardStyle}">
+                        <StackPanel>
+                            <TextBlock Text="⚔️ SWTOR Einstellungen" 
+                                       Style="{DynamicResource MaterialDesignHeadline6TextBlock}"
+                                       Foreground="{StaticResource AccentColor}"
+                                       Margin="0,0,0,20"/>
+                            
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock Text="SWTOR-Pfad:" 
+                                           Style="{DynamicResource MaterialDesignBody1TextBlock}"
+                                           Foreground="{StaticResource TextPrimary}"
+                                           Margin="0,0,0,10"/>
+                                
+                                <Grid Margin="20,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBox Grid.Column="0" 
+                                             x:Name="SWTORPathTextBox"
+                                             Text="Automatisch erkannt"
+                                             Background="#252525"
+                                             BorderBrush="{StaticResource BorderColor}"
+                                             Foreground="{StaticResource TextSecondary}"
+                                             IsReadOnly="True"
+                                             Margin="0,0,10,0"/>
+                                    
+                                    <Button Grid.Column="1" 
+                                            Content="Durchsuchen"
+                                            Style="{StaticResource ModernButtonStyle}"
+                                            Width="100"
+                                            Click="BrowseSWTORPath_Click"/>
+                                </Grid>
+                            </StackPanel>
+                            
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock Text="Launcher-Erkennung:" 
+                                           Style="{DynamicResource MaterialDesignBody1TextBlock}"
+                                           Foreground="{StaticResource TextPrimary}"
+                                           Margin="0,0,0,10"/>
+                                
+                                <CheckBox x:Name="UseWaitForInputIdleCheckBox" 
+                                          Content="WaitForInputIdle verwenden (empfohlen)"
+                                          Foreground="{StaticResource TextPrimary}"
+                                          Margin="20,5,0,5"
+                                          IsChecked="True"/>
+                                
+                                <CheckBox x:Name="UseCPUMonitoringCheckBox" 
+                                          Content="CPU-Auslastung überwachen"
+                                          Foreground="{StaticResource TextPrimary}"
+                                          Margin="20,5,0,5"
+                                          IsChecked="True"/>
+                                
+                                <CheckBox x:Name="UseMemoryMonitoringCheckBox" 
+                                          Content="Speicherverbrauch überwachen"
+                                          Foreground="{StaticResource TextPrimary}"
+                                          Margin="20,5,0,5"
+                                          IsChecked="True"/>
+                                
+                                <CheckBox x:Name="UseWindowStabilityCheckBox" 
+                                          Content="Fenster-Stabilität überwachen"
+                                          Foreground="{StaticResource TextPrimary}"
+                                          Margin="20,5,0,5"
+                                          IsChecked="True"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </materialDesign:Card>
+                    
+                    <!-- Erweiterte Einstellungen -->
+                    <materialDesign:Card Style="{StaticResource ModernCardStyle}">
+                        <StackPanel>
+                            <TextBlock Text="⚙️ Erweiterte Einstellungen" 
+                                       Style="{DynamicResource MaterialDesignHeadline6TextBlock}"
+                                       Foreground="{StaticResource AccentColor}"
+                                       Margin="0,0,0,20"/>
+                            
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock Text="Debug-Modus:" 
+                                           Style="{DynamicResource MaterialDesignBody1TextBlock}"
+                                           Foreground="{StaticResource TextPrimary}"
+                                           Margin="0,0,0,10"/>
+                                
+                                <CheckBox x:Name="DebugModeCheckBox" 
+                                          Content="Detaillierte Logs aktivieren"
+                                          Foreground="{StaticResource TextPrimary}"
+                                          Margin="20,5,0,5"/>
+                                
+                                <CheckBox x:Name="ShowStatusBoxCheckBox" 
+                                          Content="Status-Box immer anzeigen"
+                                          Foreground="{StaticResource TextPrimary}"
+                                          Margin="20,5,0,5"
+                                          IsChecked="True"/>
+                                
+                                <CheckBox x:Name="AutoSaveLogsCheckBox" 
+                                          Content="Logs automatisch speichern"
+                                          Foreground="{StaticResource TextPrimary}"
+                                          Margin="20,5,0,5"/>
+                            </StackPanel>
+                            
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock Text="Performance-Einstellungen:" 
+                                           Style="{DynamicResource MaterialDesignBody1TextBlock}"
+                                           Foreground="{StaticResource TextPrimary}"
+                                           Margin="0,0,0,10"/>
+                                
+                                <Grid Margin="20,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBlock Grid.Column="0" 
+                                               Text="Überwachungs-Intervall:" 
+                                               Foreground="{StaticResource TextPrimary}"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,10,0"/>
+                                    <TextBox Grid.Column="1" 
+                                             x:Name="MonitoringIntervalTextBox"
+                                             Text="500"
+                                             Background="#252525"
+                                             BorderBrush="{StaticResource BorderColor}"
+                                             Foreground="{StaticResource TextPrimary}"
+                                             Margin="0,5"/>
+                                    <TextBlock Grid.Column="2" 
+                                               Text="Millisekunden" 
+                                               Foreground="{StaticResource TextSecondary}"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0"/>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </materialDesign:Card>
+                </StackPanel>
+            </ScrollViewer>
+            
+            <!-- Bottom Buttons -->
+            <StackPanel Grid.Row="2" 
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Right"
+                        Margin="20">
+                <Button x:Name="ResetButton" 
+                        Content="Zurücksetzen"
+                        Style="{StaticResource ModernButtonStyle}"
+                        Background="Transparent"
+                        BorderBrush="{StaticResource WarningColor}"
+                        Foreground="{StaticResource WarningColor}"
+                        Width="120" Height="35"
+                        Margin="0,0,10,0"
+                        Click="ResetButton_Click"/>
+                
+                <Button x:Name="SaveButton" 
+                        Content="Speichern"
+                        Style="{StaticResource ModernButtonStyle}"
+                        Width="120" Height="35"
+                        Click="SaveButton_Click"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

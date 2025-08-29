@@ -1,0 +1,48 @@
+<UserControl x:Class="SWTORStarter.Controls.StatusItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:SWTORStarter.Converters"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    
+    <UserControl.Resources>
+        <converters:StatusColorConverter x:Key="StatusColorConverter"/>
+        <converters:StatusIconConverter x:Key="StatusIconConverter"/>
+        <converters:StatusTextConverter x:Key="StatusTextConverter"/>
+        
+        <!-- Material Design 3 Dark Theme Colors -->
+        <SolidColorBrush x:Key="MaterialSurface" Color="#1E1E1E"/>
+        <SolidColorBrush x:Key="MaterialOutline" Color="#3D3D3D"/>
+        <SolidColorBrush x:Key="OnSurface" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="OnSurfaceVariant" Color="#B3B3B3"/>
+    </UserControl.Resources>
+    
+    <Border Background="{StaticResource MaterialSurface}" 
+            BorderBrush="{StaticResource MaterialOutline}"
+            BorderThickness="1"
+            CornerRadius="12" 
+            Padding="16,12" 
+            Margin="0,4"
+            Effect="{x:Null}">
+        <StackPanel Orientation="Horizontal">
+            <!-- Status Icon mit Material Design Icon -->
+            <Border Background="{Binding StatusText, Converter={StaticResource StatusColorConverter}}"
+                    CornerRadius="16" 
+                    Width="32" Height="32" 
+                    Margin="0,0,16,0">
+                <materialDesign:PackIcon Kind="{Binding StatusText, Converter={StaticResource StatusIconConverter}}"
+                                       Width="18" Height="18" 
+                                       Foreground="White"
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+            </Border>
+            
+            <!-- Status Text -->
+            <TextBlock Text="{Binding StatusText, Converter={StaticResource StatusTextConverter}}"
+                       FontSize="14" 
+                       VerticalAlignment="Center"
+                       Foreground="{Binding StatusText, Converter={StaticResource StatusColorConverter}}"
+                       FontWeight="SemiBold"
+                       FontFamily="{DynamicResource MaterialDesignBody1}"/>
+        </StackPanel>
+    </Border>
+</UserControl>
